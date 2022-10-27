@@ -84,11 +84,15 @@ var inputKey;
 
 grid[startingPos[0]][startingPos[1]][0] = 1;
 
-var snakeLength;
+var snakeLength = 2;
 var snakeBody = new Array(snakeLength);
 snakeBody[0] = [startingPos[0], startingPos[1]];
+snakeBody[1] = [startingPos[0], startingPos[1]-1];
+snakeBody[2] = [startingPos[0], startingPos[1] -2]; 
+snakeBody[3] = [startingPos[0], startingPos[1] -3]; 
 var direction;
 function gameLoop() {
+    
     let newLoc = snakeBody[0];
     //Input
     if(inputKey == "KeyW") {
@@ -110,7 +114,7 @@ function gameLoop() {
     } else if(direction == "east") {
         newLoc = [snakeBody[0][0] + 1, snakeBody[0][1]];
     }
-    console.log(direction);
+    //console.log(snakeBody.length);
 
     //Check if the player is out of bounds
     if(newLoc[0] < 0) {
@@ -126,16 +130,9 @@ function gameLoop() {
     //  verify move
     // if snake is on food, then increase snakeLength by 1
     // snakeBody.push
-
-    if(snakeBody.length > snakeLength) {
-
-    } else {
-        snakeBody.unshift(newLoc);
-        if(snakeBody.length > 1) {
-            snakeBody.pop();
-        }
-        
-    }
+    snakeBody.unshift(newLoc);
+    snakeBody.pop();
+    console.log(snakeBody[0] + " " + snakeBody[1]);
     for (let x = 0; x < cols; x++) {
         for(let y = 0; y < rows; y++) {
             grid[x][y][0] = [0];
@@ -148,7 +145,7 @@ function gameLoop() {
         if (i == 0) {
             grid[snakeBody[0][0]][snakeBody[0][1]][0] = 1;
         } else {
-            grid[snakeBody[0][0]][snakeBody[0][1]][0] = 2;
+            grid[snakeBody[i][0]][snakeBody[i][1]][0] = 2;
         }
     }
     //Render
