@@ -1,4 +1,3 @@
-
 //Define how many rows and columns are in the grid
 const rows = 11;
 const cols = 11;
@@ -7,10 +6,10 @@ const cols = 11;
 const size = [20, 20];
 
 //Starting position of the snake [x, y]
-const startingPos = [5, 5];
+const startingPos = [5, 4];
 
 //Max FPS
-const maxFPS = 30;
+const maxFPS = 10;
 
 //Define the canvas and its context
 const canvas = document.getElementById('board');
@@ -94,34 +93,62 @@ function gameLoop() {
     //Input
     if(inputKey == "KeyW") {
         direction = "north";
+    } else if(inputKey == "KeyA") {
+        direction = "west";
+    } else if(inputKey == "KeyS") {
+        direction = "south";
+    } else if(inputKey == "KeyD") {
+        direction = "east";
     }
     //Calculate move
     if(direction == "north") {
-        newLoc = [loc[0], loc[1] + 1];
+        newLoc = [snakeBody[0][0], snakeBody[0][1] - 1];
+    } else if (direction == "west") {
+        newLoc = [snakeBody[0][0] - 1, snakeBody[0][1]];
+    } else if(direction == "south") {
+        newLoc = [snakeBody[0][0], snakeBody[0][1] + 1];
+    } else if(direction == "east") {
+        newLoc = [snakeBody[0][0] + 1, snakeBody[0][1]];
     }
+    console.log(direction);
+
+    //Check if the player is out of bounds
+    if(newLoc[0] < 0) {
+        newLoc[0] = cols - 1;
+    } else if(newLoc[0] > cols - 1) {
+        newLoc[0] = 0;
+    } else if(newLoc[1] < 0) {
+        newLoc[1] = rows - 1;
+    } else if(newLoc[1] > rows - 1) {
+        newLoc[1] = 0;
+    } 
 
     //  verify move
     // if snake is on food, then increase snakeLength by 1
     // snakeBody.push
 
-    if(snakeBody.length < snakeLength) {
+    if(snakeBody.length > snakeLength) {
 
     } else {
-        snakeBody.unshift(newPos);
-        snakeBody.pop();
+        snakeBody.unshift(newLoc);
+        if(snakeBody.length > 1) {
+            snakeBody.pop();
+        }
+        
     }
-
     for (let x = 0; x < cols; x++) {
         for(let y = 0; y < rows; y++) {
             grid[x][y][0] = [0];
         }
     }
 
+
+    //Fills in all snake cells
     for (let i = 0; i < snakeBody.length; i++) {
-        if(i === 0) {
-            grid[x][y][0] = 1;
+        if (i == 0) {
+            grid[snakeBody[0][0]][snakeBody[0][1]][0] = 1;
         } else {
-            grid[x][y][0] = 2;
+            grid[snakeBody[0][0]][snakeBody[0][1]][0] = 2;
         }
     }
     //Render
