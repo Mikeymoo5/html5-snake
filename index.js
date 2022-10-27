@@ -9,7 +9,7 @@ const size = [20, 20];
 const startingPos = [5, 4];
 
 //Max FPS
-const maxFPS = 1;
+const maxFPS = 10;
 
 //Define the canvas and its context
 const canvas = document.getElementById('board');
@@ -95,23 +95,33 @@ function gameLoop() {
         direction = "north";
     } else if(inputKey == "KeyA") {
         direction = "west";
+    } else if(inputKey == "KeyS") {
+        direction = "south";
+    } else if(inputKey == "KeyD") {
+        direction = "east";
     }
     //Calculate move
     if(direction == "north") {
-        newLoc = [snakeBody[0][0], snakeBody[1][1] - 1];
+        newLoc = [snakeBody[0][0], snakeBody[0][1] - 1];
     } else if (direction == "west") {
-        newLoc = [snakeBody[0][0] - 1, snakeBody[1][1]];
+        newLoc = [snakeBody[0][0] - 1, snakeBody[0][1]];
+    } else if(direction == "south") {
+        newLoc = [snakeBody[0][0], snakeBody[0][1] + 1];
+    } else if(direction == "east") {
+        newLoc = [snakeBody[0][0] + 1, snakeBody[0][1]];
     }
-
+    console.log(direction);
 
     //Check if the player is out of bounds
     if(newLoc[0] < 0) {
-        newLoc[0] = cols;
-    } else if(newLoc[0] > 0) {
-        
+        newLoc[0] = cols - 1;
+    } else if(newLoc[0] > cols - 1) {
+        newLoc[0] = 0;
     } else if(newLoc[1] < 0) {
-        //newLoc[1] = rows;
-    }
+        newLoc[1] = rows - 1;
+    } else if(newLoc[1] > rows - 1) {
+        newLoc[1] = 0;
+    } 
 
     //  verify move
     // if snake is on food, then increase snakeLength by 1
